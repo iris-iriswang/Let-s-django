@@ -1,0 +1,64 @@
+1.安裝pip
+    (1)到官網載入get-pip.py
+    (2)$ python get-pip.py
+2.虛擬環境virtualenv
+    (1)$ pip install virtualenv
+    (2)$ virtualenv {ve_name}
+    (3)$ source {ve_name}/bin/activate
+    windows->    $ {ve_name}\Scripts\activate #deactivate就是關閉ve
+    若命令列前方有顯示 ({ve_name})$ 表示成功
+3.安裝Django
+    (1)$ pip install Django==1.7.1(視所需版本而定)
+4.用django建專案
+    (1)$ django-admin.py startproject {p_name}
+    windows->   $ django-admin.exe startproject {p_name}
+    (2)專案結構
+        {p_name}/
+            -manage.py
+            -{p_name}/
+                -_init_.py
+                -settings.py
+                -urls.py
+                -wsgi.py
+    (3)執行server
+        $ python manage.py runserver
+    (4)環境設定settings.py
+        #路徑設定
+            取得最外層專案路徑(第一個p_name)
+            BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+            方便用來設定路徑,e.g.,
+            TEMPLATE_DIRS = {
+                os.path.join(BASE_DIR, "templates"),
+            }
+        #除錯模式
+            DEBUG相關要設為FALSE
+        #Root URL設定
+            ROOT_URLCONF = 'testDjangoProject.urls' #指的是urls.py此為package
+        #資料庫設定
+            預設值,Django內建sqlite3
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.sqlite3',
+                    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+                }
+            }
+        #時區與語言
+            LANGUAGE_CODE = 'en-us'
+            TIME_ZONE = 'UTC'
+5.URL與顯示內容
+    (1)urls.py
+        #patter, action介紹
+            e.g.,http://www.ntust.edu.tw/hello/
+            pattern: "hello/"
+            action: 當使用者輸入 http://www.ntust.edu.tw/hello/後給予的回應, 通常是function定義於views.py
+        #pattern設定
+            Python正規表示:"^符號代表比對開始","$符號代表比對結束"
+            urlpatterns = patterns('',
+                url(r'^admin/', include(admin.site.urls)),
+                url(r'^helloworld/$', helloworld), #全等於helloworld/的pattern
+                url(r'^hello/', helloworld), #hello/開頭的pattern
+            )
+    (2)views.py
+        #action設定:定義要給予的回應有什麼
+            def helloworld(request):
+                return HttpResponse('helloworld hey hey hey')
